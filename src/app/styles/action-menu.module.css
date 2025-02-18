@@ -26,6 +26,9 @@
 }
 
 .menuItem {
+    cursor: pointer;
+    background-color: var(--background);
+    border: none;
     padding: 5px;
     margin-left: 10px;
 }

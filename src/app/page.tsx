@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./styles/page.module.css";
 import { ShowcaseBundleWindow, Tag, MpSdk, Vector3 } from "../../public/sdk";
 import ActionMenu from "./action-menu";
+import { SWEEP_NEAR_OFFICE_ID, SWEEP_WITH_BANANA_ID } from "./constants";
 
 const tag: Tag.Descriptor = {
   anchorPosition: {
@@ -19,10 +20,9 @@ const tag: Tag.Descriptor = {
   label: "Office"
 }
 
-const SWEEP_WITH_BANANA_ID = "665pcnn0eaxz2x80xb473gg3b";
-const SWEEP_NEAR_OFFICE_ID = "w37dug1fg2az31k06590r8eaa";
-
 export default function Home() {
+  const [sdk, setSdk] = useState<MpSdk>();
+  const [showMenu, setShowMenu] = useState(false);
 
   const addModel = useCallback(async (sdk: MpSdk, {x, y, z}: Vector3) => {
     const [ sceneObject ] = await sdk!.Scene.createObjects(1);
@@ -52,6 +52,7 @@ export default function Home() {
       let mpSdk;
       try {
         mpSdk = await showcaseWindow.MP_SDK.connect(showcaseWindow);
+        setSdk(mpSdk);
       }
       catch(e) {
         console.error(e);
@@ -76,6 +77,8 @@ export default function Home() {
           }
         }
       });
+      await mpSdk.App.state.waitUntil(state => state.phase === mpSdk.App.Phase.PLAYING);
+      setShowMenu(true);
     });
   }, []);
 
@@ -91,7 +94,7 @@ export default function Home() {
           allowFullScreen
           allow="vr"
         />
-        <ActionMenu />
+        {showMenu && <ActionMenu sdk={sdk!}/>}
       </main>
     </div>
   );
