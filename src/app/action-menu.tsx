@@ -3,14 +3,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles/action-menu.module.css";
 import { Actions, ActionsProps, Items } from "./types";
-import { SWEEP_NEAR_OFFICE_ID } from "./constants";
+import { SWEEP_IN_OFFICE_ID } from "./constants";
 
 const ActionMenu = ({sdk}: ActionsProps) => {
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState<Items>();
 
     const actions: Actions = useMemo(() => ({
-        teleport: (sdk) => {sdk.Sweep.moveTo(SWEEP_NEAR_OFFICE_ID, {})},
+        teleport: (sdk) => {sdk.Sweep.moveTo(SWEEP_IN_OFFICE_ID, {})},
         walk: (sdk) => {}
     }), [])
 

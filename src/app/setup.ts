@@ -1,5 +1,5 @@
 import { MpSdk, Tag, Vector3 } from "../../public/sdk";
-import { SWEEP_NEAR_OFFICE_ID, SWEEP_WITH_BANANA_ID } from "./constants";
+import { SWEEP_IN_OFFICE_ID, SWEEP_WITH_BANANA_ID } from "./constants";
 
 const tag: Tag.Descriptor = {
   anchorPosition: {
@@ -39,13 +39,13 @@ export const addModel = async (sdk: MpSdk, {x, y, z}: Vector3) => {
 export const setupTagAndModel = async (mpSdk: MpSdk) => {
     const tagId = await mpSdk!.Tag.add(tag).then(result => result[0]);
 
-    mpSdk!.Sweep.data.subscribe({
+    mpSdk.Sweep.data.subscribe({
       onAdded: function (_, item) {
-        if (item.id === SWEEP_NEAR_OFFICE_ID) {
+        if (item.id === SWEEP_IN_OFFICE_ID) {
           mpSdk!.Tag.editPosition(tagId, {
             anchorPosition: {
               ...item.position,
-              z: item.position.z + 5
+              z: item.position.z + 1
             }
           });
         }
