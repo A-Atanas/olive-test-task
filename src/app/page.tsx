@@ -2,7 +2,21 @@
 
 import { useEffect } from "react";
 import styles from "./page.module.css";
-import { ShowcaseBundleWindow } from "../../public/sdk";
+import { ShowcaseBundleWindow, Tag } from "../../public/sdk";
+
+const tag: Tag.Descriptor = {
+  anchorPosition: {
+    x: 51,
+    y: 1,
+    z: -3
+  },
+  stemVector: {
+    x: 0,
+    y: 0,
+    z: 0
+  },
+  label: "Office"
+}
 
 export default function Home() {
 
@@ -19,7 +33,7 @@ export default function Home() {
         return;
       }
 
-      console.log('Hello Bundle SDK', mpSdk);
+      mpSdk.Tag.add(tag)
     });
   }, []);
 
