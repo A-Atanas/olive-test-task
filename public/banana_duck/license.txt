@@ -1,0 +1,11 @@
+Model Information:
+* title:	banana duck
+* source:	https://sketchfab.com/3d-models/banana-duck-e542871d099947de88212a4a86315a40
+* author:	catl3rs (https://sketchfab.com/catwithantlers)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "banana duck" (https://sketchfab.com/3d-models/banana-duck-e542871d099947de88212a4a86315a40) by catl3rs (https://sketchfab.com/catwithantlers) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
