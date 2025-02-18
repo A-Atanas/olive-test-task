@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useEffect } from "react";
-import styles from "./page.module.css";
+import styles from "./styles/page.module.css";
 import { ShowcaseBundleWindow, Tag, MpSdk, Vector3 } from "../../public/sdk";
+import ActionMenu from "./action-menu";
 
 const tag: Tag.Descriptor = {
   anchorPosition: {
@@ -83,13 +84,14 @@ export default function Home() {
       <main className={styles.main}>
         <iframe
           id="showcase"
-          width="740"
-          height="480"
+          width="1110"
+          height="720"
           src="showcase.html?m=m72PGKzeknR&applicationKey=295ba0c0f04541318359a8e75af33043"
           frameBorder="0"
           allowFullScreen
           allow="vr"
         />
+        <ActionMenu />
       </main>
     </div>
   );

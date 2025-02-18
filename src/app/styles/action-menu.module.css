@@ -1,0 +1,31 @@
+.menuContainer {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: none;
+}
+
+.dropdownButton {
+    cursor: pointer;
+    background-color: var(--background);
+    border: none;
+    height: 40px;
+    font-size: 16px;
+    font-weight: 900;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background);
+    border-bottom-left-radius: 10px;
+}
+
+.menuItem {
+    padding: 5px;
+    margin-left: 10px;
+}
