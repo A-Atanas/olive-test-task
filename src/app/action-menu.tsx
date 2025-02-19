@@ -23,19 +23,18 @@ const ActionMenu = ({sdk}: ActionsProps) => {
             }
 
             const path = sdk.Graph.createAStarRunner(sweepGraph, startSweep, endSweep).exec().path;
-            sdk.Camera.pose.subscribe(function (pose) {
-                // Changes to the Camera pose have occurred.
-                console.log('Current position is ', pose.position);
-                console.log('Rotation angle is ', pose.rotation);
-                console.log('Sweep UUID is ', pose.sweep);
-                console.log('View mode is ', pose.mode);
-              });
-              
             for (const vertex of path) {
-                await sdk.Camera.setRotation({
-                    x: vertex.data.position.x,
-                    y: vertex.data.position.y
-                });
+                // I was never able to rotate a camera towards a point :(
+                // const cameraPosition = await sdk.Camera.getPose().then(pose => pose.position);
+                // const dx = vertex.data.position.x - cameraPosition.x;
+                // const dz = vertex.data.position.z - cameraPosition.z;
+
+                // const yaw = Math.atan2(dz, dx) * (180 / Math.PI);
+
+                // await sdk.Camera.setRotation({
+                //     x: cameraPosition.x,
+                //     y: yaw
+                // });
                 await sdk.Sweep.moveTo(vertex.id, {transition: sdk.Sweep.Transition.FLY});
             }
             sweepGraph.dispose();
