@@ -4,10 +4,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles/action-menu.module.css";
 import { Actions, ActionsProps, Items } from "./types";
 import { STARTING_SWEEP, SWEEP_IN_OFFICE_ID } from "./constants";
+import throttle from "lodash/throttle";
+import { debounce } from "lodash";
 
 const ActionMenu = ({sdk}: ActionsProps) => {
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState<Items>();
+    const [formValue, setFormValue] = useState("");
 
     const actions: Actions = useMemo(() => ({
         teleport: (sdk) => {
@@ -72,17 +75,25 @@ const ActionMenu = ({sdk}: ActionsProps) => {
         setOpen(!open);
     }, [open]);
 
+    const fetchData = async (search?: string) => {
+        const response = await fetch(`http://localhost:3000${search ? "?q=" + search : ""}`);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const result = await response.json() as Items;
+        setItems(result);
+    };
+
+    const debouncedFetchData = useMemo(() => debounce(fetchData, 500), []);
+
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("http://localhost:3000");
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-            const result = await response.json() as Items;
-            setItems(result);
-        };
         fetchData();
     }, []);
+
+    const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormValue(event.target.value);
+        debouncedFetchData(event.target.value);
+    }, [debouncedFetchData]);
 
     return (
         <div className={styles.menuContainer}>
@@ -91,6 +102,7 @@ const ActionMenu = ({sdk}: ActionsProps) => {
             </button>
             {open && items && (
                 <div className={styles.menu}>
+                    <input type="text" value={formValue} onChange={handleSearch}/>
                     {Object.entries(items).map(([type, {label}]) => (
                         <button key={type} className={styles.menuItem} onClick={() => actions[type](sdk)}>
                             <p>{label}</p>

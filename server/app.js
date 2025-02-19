@@ -5,14 +5,20 @@ app.use(cors());
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send({
+  const fullResponse = {
     teleport: {
         label: "Teleport to office"
     },
     walk: {
         label: "Walk to office"
     }
-  })
+  }
+  res.send(!req.query.q
+    ? fullResponse
+    : res.send(
+      Object.fromEntries(Object.entries(fullResponse).filter(([type]) => type.toLocaleLowerCase().includes(req.query.q.toLocaleLowerCase())))
+    )
+  )
 })
 
 app.listen(port, () => {
