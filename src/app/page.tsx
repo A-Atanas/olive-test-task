@@ -5,7 +5,6 @@ import styles from "./styles/page.module.css";
 import { ShowcaseBundleWindow, MpSdk } from "../../public/sdk";
 import ActionMenu from "./action-menu";
 import { setupTagAndModel } from "./setup";
-import { Mode } from "@matterport/sdk";
 
 export default function Home() {
   const [sdk, setSdk] = useState<MpSdk>();

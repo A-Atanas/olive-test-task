@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles/action-menu.module.css";
 import { Actions, ActionsProps, Items } from "./types";
 import { STARTING_SWEEP, SWEEP_IN_OFFICE_ID } from "./constants";
-import { Vector2 } from "three";
 
 const ActionMenu = ({sdk}: ActionsProps) => {
     const [open, setOpen] = useState(false);
@@ -23,6 +22,34 @@ const ActionMenu = ({sdk}: ActionsProps) => {
             }
 
             const path = sdk.Graph.createAStarRunner(sweepGraph, startSweep, endSweep).exec().path;
+
+            const [pathDots] = await sdk.Scene.createObjects(1);
+            for (let i = 0; i < path.length - 1; i++) {
+                for (let j = 0; j < 10; j++) {
+                    const thisSweep = path[i].data.position;
+                    const nextSweep = path[i + 1].data.position;
+                    const dotNode = pathDots.addNode();
+                    const model = dotNode.addComponent(sdk.Scene.Component.GLTF_LOADER, {
+                        url: 'sphere/scene.gltf',
+                    });
+
+                    model.inputs!.localScale = {
+                        x: 0.002,
+                        y: 0.002,
+                        z: 0.002
+                    };
+                    
+                    const dx = nextSweep.x - thisSweep.x;
+                    const dz = nextSweep.z - thisSweep.z;
+                    dotNode.position.set(
+                        path[i].data.position.x + dx / 10 * j,
+                        thisSweep.y - 1,
+                        path[i].data.position.z + dz / 10 * j
+                    )
+                    dotNode.start();
+                }
+            }
+
             for (const vertex of path) {
                 // I was never able to rotate a camera towards a point :(
                 // const cameraPosition = await sdk.Camera.getPose().then(pose => pose.position);
@@ -31,13 +58,13 @@ const ActionMenu = ({sdk}: ActionsProps) => {
 
                 // const yaw = Math.atan2(dz, dx) * (180 / Math.PI);
 
-                // await sdk.Camera.setRotation({
-                //     x: cameraPosition.x,
-                //     y: yaw
-                // });
                 await sdk.Sweep.moveTo(vertex.id, {transition: sdk.Sweep.Transition.FLY});
             }
             sweepGraph.dispose();
+            for (const dot of pathDots.nodeIterator()) {
+                dot.stop();
+            }
+            pathDots.stop();
         }
     }), [])
 
