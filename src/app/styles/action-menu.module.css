@@ -23,6 +23,7 @@
     flex-direction: column;
     background-color: var(--background);
     border-bottom-left-radius: 10px;
+    height: 200px;
 }
 
 .menuItem {
@@ -31,4 +32,22 @@
     border: none;
     padding: 5px;
     margin-left: 10px;
+}
+
+.menuItem:first-of-type {
+    margin-top: 10px;
+}
+
+.notFound {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.search {
+    padding: 5px;
+    border: none;
+}
+
+.search:focus-visible {
+    outline: none;
 }

@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles/action-menu.module.css";
 import { Actions, ActionsProps, Items } from "./types";
 import { STARTING_SWEEP, SWEEP_IN_OFFICE_ID } from "./constants";
-import throttle from "lodash/throttle";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 const ActionMenu = ({sdk}: ActionsProps) => {
     const [open, setOpen] = useState(false);
@@ -102,12 +101,15 @@ const ActionMenu = ({sdk}: ActionsProps) => {
             </button>
             {open && items && (
                 <div className={styles.menu}>
-                    <input type="text" value={formValue} onChange={handleSearch}/>
-                    {Object.entries(items).map(([type, {label}]) => (
-                        <button key={type} className={styles.menuItem} onClick={() => actions[type](sdk)}>
-                            <p>{label}</p>
-                        </button>
-                    ))}
+                    <input className={styles.search} type="text" value={formValue} onChange={handleSearch} placeholder="Search..."/>
+                    {Object.entries(items).length
+                        ? Object.entries(items).map(([type, {label}]) => (
+                            <button key={type} className={styles.menuItem} onClick={() => actions[type](sdk)}>
+                                <p>{label}</p>
+                            </button>
+                        ))
+                        : <em className={styles.notFound}>No action items found</em>
+                    }
                 </div>
             )}
         </div>
