@@ -14,7 +14,14 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, in a separate terminal tab or window run:
+
+```bash
+cd server
+node app.js
+```
+
+Open [http://localhost:5002](http://localhost:5002) with your browser to see the result. Server is running on port 3000
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
